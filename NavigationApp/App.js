@@ -1,5 +1,5 @@
-import React from 'react';
-import { SafeAreaView, Text, View, Button } from 'react-native';
+import * as React from 'react';
+import { Text, View, Button } from 'react-native';
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,8 +11,12 @@ const HomeScreen = ({ navigation, route }) => {
       <Text>Home!</Text>
       <Text>{route.params?.id}</Text>
       <Button
-      onPress={() => navigation.navigate('Settings', { id: Math.random()})}
-      title="Go to settings"
+        onPress={() => navigation.navigate('Settings', {screen: 'settingsMain', params: { id: Math.random()}})}
+        title="Go to settings main"
+      />
+      <Button
+        onPress={() => navigation.navigate('Settings', {screen: 'settingsSecondary', params: { id: Math.random()}})}
+        title="Go to settings secondary"
       />
       
     </View>
@@ -25,8 +29,8 @@ const SettingsMain = ({ navigation, route }) => {
       <Text>Settings Main!</Text>
       <Text>{route.params?.id}</Text>
       <Button
-      onPress={() => navigation.navigate('Home', { id: Math.random()})}
-      title="Go to settings"
+        onPress={() => navigation.navigate('Home')}
+        title="Go back home"
       />
     </View>
   );
@@ -38,8 +42,8 @@ const SettingsSecondary = ({ navigation, route }) => {
       <Text>Settings Secondary!</Text>
       <Text>{route.params?.id}</Text>
       <Button
-      onPress={() => navigation.navigate('Home', { id: Math.random()})}
-      title="Go to settings"
+        onPress={() => navigation.navigate('Home', { id: Math.random()})}
+        title="Go back home"
       />
     </View>
   );
@@ -47,12 +51,11 @@ const SettingsSecondary = ({ navigation, route }) => {
 
 const Stack = createStackNavigator();
 
-const SettingsScreen = ({ navigation, route}) => {
-  console.log(route.params?.id)
+const SettingsScreen = () => {
   return (
-    <Stack.Navigator initialRouteName={(route.params?.id >= 0.5) ? 'main': 'secondary'}>
-      <Stack.Screen name="main" component={SettingsMain} />
-      <Stack.Screen name="secondary" component={SettingsSecondary} />
+    <Stack.Navigator initialRouteName='settingsMain'>
+      <Stack.Screen name="settingsMain" component={SettingsMain} />
+      <Stack.Screen name="settingsSecondary" component={SettingsSecondary} />
     </Stack.Navigator>
   )
 }
